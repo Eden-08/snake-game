@@ -27,7 +27,7 @@ class Snake {
     } else if (this.rotateY == -1) {
       newRect = {
         x: this.tail[this.tail.length - 1].x,
-        y: this.tail[this.tail.length - 1].y + this.size,
+        y: this.tail[this.tail.length - 1].y - this.size,
       };
     }
     this.tail.shift();
@@ -69,7 +69,7 @@ window.onload = () => {
 };
 
 function gameLoop() {
-  setInterval(show, 1000 / 15);
+  setInterval(show, 1000 / 10);
 }
 
 function show() {
@@ -78,7 +78,7 @@ function show() {
 }
 
 function update() {
-  canvasContext.clearReact(0, 0, canvas.width, canvas.height);
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   console.log("update");
   snake.move();
   eatApple();
@@ -89,17 +89,17 @@ function checkHitwall() {
   var headTail = snake.tail[snake.tail.length - 1];
   if (headTail.x == -snake.size) {
     headTail.x = canvas.width - snake.size;
-  } else if (headTail.x == -canvas.width) {
+  } else if (headTail.x == canvas.width) {
     headTail.x = 0;
   } else if (headTail.y == -snake.size) {
     headTail.y = canvas.height - snake.size;
-  } else if (headTail.y == -canvas.height) {
+  } else if (headTail.y == canvas.height) {
     headTail.y = 0;
   }
 }
 
 function eatApple() {
-  if (snake.tail[snake.tail.length - 1].x == apple.x && snake.tail[snake.tail.length - 1].x == apple.y) {
+  if (snake.tail[snake.tail.length - 1].x == apple.x && snake.tail[snake.tail.length - 1].y == apple.y) {
     snake.tail[snake.tail.length] = { x: apple.x, y: apple.y };
     apple = new Apple();
   }
@@ -113,9 +113,9 @@ function draw() {
   }
 
   canvasContext.font = "20px Arial";
-  canvasContext.fillStyle = "#00FF42";
+  canvasContext.fillStyle = "#00000";
   canvasContext.fillText("Score: " + (snake.tail.length - 1), canvas.width - 120, 18);
-  createRect(apple.x, apple.y, apple.size, apple, size, "pink");
+  createRect(apple.x, apple.y, apple.size, apple.size, apple.color);
 }
 
 function createRect(x, y, width, height, color) {
@@ -138,5 +138,5 @@ window.addEventListener("keydown", (event) => {
       snake.rotateX = 0;
       snake.rotateY = 1;
     }
-  });
+  }, 1);
 });
